@@ -29,19 +29,25 @@ python -m http.server 53208
 npx serve .
 ```
 
-## 部署到 Cloudflare Pages（免费）
+## 部署到 Cloudflare（免费）
 
-1. 将本仓库推送到 GitHub
-2. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/) → Pages → Create a project
-3. 连接 GitHub 仓库，构建设置：
-   - **Build command**: 留空
-   - **Build output directory**: `/`
-4. 部署完成后即可通过 `*.pages.dev` 访问
+Cloudflare 已将 Pages 合并进 Workers，静态站点通过 Worker + 静态资源部署。
 
-也可直接用 Wrangler CLI：
+### 方式一：Dashboard + GitHub（推荐）
+
+1. [Cloudflare Dashboard](https://dash.cloudflare.com/) → **Workers & Pages** → **Create application**
+2. 选择 **Connect to Git**，授权并选择本仓库 `aa-splitter`
+3. 构建设置：
+   - **Build command**：留空
+   - **Deploy command**：`npx wrangler deploy`（默认即可）
+4. 点 **Deploy**，完成后通过 `aa-splitter.<你的子域>.workers.dev` 访问
+
+仓库已包含 `wrangler.jsonc`，无需额外配置。
+
+### 方式二：Wrangler CLI
 
 ```bash
-npx wrangler pages deploy . --project-name aa-splitter
+npx wrangler deploy
 ```
 
 ## 文件结构
@@ -51,6 +57,7 @@ npx wrangler pages deploy . --project-name aa-splitter
 ├── app.js          # UI + localStorage
 ├── settlement.js   # 净余额 + 贪心简化算法
 ├── styles.css      # 样式
+├── wrangler.jsonc  # Cloudflare Workers 静态资源配置
 └── README.md
 ```
 
